@@ -3,14 +3,13 @@ apiVersion: v2
 name: traefik
 type: application
 description: Traefik Proxy Helm Chart for Kubernetes
-appVersion: v3.4.0
-version: 35.3.0
-kubeVersion: ">=1.22.0-0"
+appVersion: v0.0.1
+version: 0.0.1
 keywords:
   - traefik
   - ingress
   - ingress-controller
 dependencies:
   - name: traefik
-    version: 35.3.0
+    version: 38.0.1
     repository: https://traefik.github.io/charts

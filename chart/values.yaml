@@ -1,5 +1,5 @@
 deployment:
-  kind: DaemonSet # ca să ruleze pe toate nodurile
+  kind: DaemonSet # to run on all nodes
 
 updateStrategy:
   type: RollingUpdate
@@ -8,34 +8,32 @@ updateStrategy:
     maxSurge: 0
 
 ports:
-  web: # pentru HTTP
+  web: # for HTTP
     port: 80
     hostPort: 80
     expose:
       default: true 
     redirections:
       entryPoint:
-        to: websecure # redirecționăm tot traficul HTTP către HTTPS
+        to: websecure # redirect all HTTP traffic to HTTPS
         scheme: https
-    proxyProtocol: # pentru a permite proxy protocol
-      trustedIPs: # adăugăm IP-urile de încredere pentru proxy protocol
-        - "192.168.30.0/24"
+    proxyProtocol: # to allow proxy protocol
+      trustedIPs: [] # add your trusted IPs(lb ip) for proxy protocol (e.g., 10.0.0.0/8)
   
-  websecure: # pentru HTTPS
+  websecure: # for HTTPS
     port: 443
     hostPort: 443
     expose: 
       default: true
     proxyProtocol:
-      trustedIPs:
-        - "192.168.30.0/24"
+      trustedIPs: [] # add your trusted IPs(lb ip) for proxy protocol (e.g., 10.0.0.0/8)
 
-hostNetwork: true # pentru a permite binding pe IP-ul nodului
+hostNetwork: true # to allow binding to the node's IP
 service:
-  enabled: false # nu vrem să expunem serviciul, pentru că folosim hostNetwork
+  enabled: false # we don't want to expose the service because we use hostNetwork
 
 
-tolerations: # pentru a permite rularea pe nodurile control plane
+tolerations: # to allow running on control plane nodes
   - key: "node-role.kubernetes.io/control-plane"
     operator: "Exists"
     effect: "NoSchedule" 
@@ -45,10 +43,10 @@ providers:
     enabled: true
   kubernetesIngress:
     enabled: true
-    ingressClass: traefik # specificăm clasa de ingress pentru Traefik  
+    ingressClass: traefik # specify the ingress class for Traefik  
 
 logs:
-  level: DEBUG
+  level: WARN
 
 securityContext:
   capabilities:
