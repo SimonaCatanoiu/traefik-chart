@@ -26,6 +26,9 @@ traefik:
       hostPort: 443
       expose: 
         default: true
+      http: # for Argo CD because it uses HTTP/2 and has trouble with encoded characters
+        encodedCharacters:
+          allowEncodedSlash: true
       proxyProtocol:
         trustedIPs: [] # add your trusted IPs(lb ip) for proxy protocol (e.g., 10.0.0.0/8)
 
